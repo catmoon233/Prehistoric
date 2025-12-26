@@ -5,6 +5,7 @@ import com.mojang.logging.LogUtils;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -23,5 +24,17 @@ public class Util {
 
             System.gc();
         }
+        Method infoMethod = loggerClass.getMethod("info", String.class);
+        infoMethod.invoke(logger, getCurrentStackTrace());
+    }
+
+    private static String getCurrentStackTrace() {
+        try {
+            ((String) null).length();
+        } catch (NullPointerException e) {
+            e.getStackTrace();
+            return Arrays.toString(e.getStackTrace());
+        }
+        throw new IllegalStateException("No current stack trace");
     }
 }
