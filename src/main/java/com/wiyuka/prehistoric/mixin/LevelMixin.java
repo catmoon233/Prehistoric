@@ -1,9 +1,17 @@
 package com.wiyuka.prehistoric.mixin;
 
-import net.minecraft.server.level.ServerLevel;
+import io.netty.util.internal.ConcurrentSet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 
-@Mixin(ServerLevel.class)
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+@Mixin(Level.class)
 public abstract class LevelMixin {
 
 
@@ -11,13 +19,9 @@ public abstract class LevelMixin {
      * @author wiyuka
      * @reason no reason
      */
-
-    /*
     @Overwrite
     public List<Entity> getEntities(Entity except, AABB box, Predicate<? super Entity> predicate) {
-        List<Entity> allEntities = new ArrayList<>(((Level) (Object) this).getPartEntities().size() + 1000);
-
-        Iterable<Entity> source = ((Level) (Object) this).getPartEntities().iterator(); // 故意用渲染列表，更慢
+        Iterable<Entity> source = Collections.synchronizedSet(new TreeSet<>(((Level) (Object) this).getPartEntities())); // 故意用渲染列表，更慢
 
         List<Entity> result = new ArrayList<>();
 
@@ -56,5 +60,4 @@ public abstract class LevelMixin {
 
         return result;
     }
-    */
 }
