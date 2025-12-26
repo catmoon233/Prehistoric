@@ -12,10 +12,12 @@ import net.neoforged.neoforge.event.tick.ServerTickEvent;
 public class CommonEvents {
     private static final SimpleCommandExceptionType ERROR_FAILED = new SimpleCommandExceptionType(Component.translatable("commands.save.failed"));
 
+    static int tickCount = 0;
     @SubscribeEvent
     public static void serverTick(ServerTickEvent.Post event)  {
-        MinecraftServer minecraftserver = event.getServer();
-        boolean flag = minecraftserver.saveEverything(true, true, true);
-
+        if (++tickCount % 5== 0) {
+            MinecraftServer minecraftserver = event.getServer();
+            boolean flag = minecraftserver.saveEverything(true, true, true);
+        }
     }
 }
