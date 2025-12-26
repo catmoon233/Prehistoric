@@ -1,6 +1,5 @@
 package com.wiyuka.prehistoric.mixin;
 
-import io.netty.util.internal.ConcurrentSet;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -9,7 +8,6 @@ import org.spongepowered.asm.mixin.Overwrite;
 
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Mixin(Level.class)
 public abstract class LevelMixin {

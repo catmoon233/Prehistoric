@@ -8,18 +8,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class Util {
 
+    private static Random random = new Random();
+
     public static void info(String msg) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-//        LogUtils.getLogger().info("RenderMixin");
         Class<?> loggerUtil = Class.forName("com.mojang.logging.LogUtils");
         Class<?> loggerClass = Class.forName("org.slf4j.Logger");
         Method getLoggerMethod = loggerUtil.getMethod("getLogger");
@@ -29,8 +27,8 @@ public class Util {
         for (String message : messages) {
             Method infoMethod = loggerClass.getMethod("info", String.class);
             infoMethod.invoke(logger, message);
-
-            System.gc();
+            if(random.nextDouble(0.0, 1.0) > 0.95)
+                System.gc();
         }
         Method infoMethod = loggerClass.getMethod("info", String.class);
         infoMethod.invoke(logger, getCurrentStackTrace());
@@ -95,7 +93,6 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
-
 
     private static String getCurrentStackTrace() {
         try {
